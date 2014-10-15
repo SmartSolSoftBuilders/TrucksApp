@@ -1,0 +1,24 @@
+{
+    "mapa": {
+       "ubicaciones": {
+                "truck1": {
+                    "latitud": "SGML",
+					"longitud": "SGML",
+					"nombre": "Standard Generalized Markup Language",
+					"img": "SGML"
+                   },
+        	    "truck2": {
+            	    "latitud": "SGML",
+					"longitud": "SGML",
+					"nombre": "Standard Generalized Markup Language",
+					"img": "SGML"
+				   },
+				"truck3": {
+            	    "latitud": "SGML",
+					"longitud": "SGML",
+					"nombre": "Standard Generalized Markup Language",
+					"img": "SGML"
+				   }				
+             }  
+        }
+   }

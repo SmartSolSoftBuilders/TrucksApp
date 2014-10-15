@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+	<string name="com_facebook_dialogloginactivity_ok_button" formatted="false">Aceptar</string>
+	<string name="com_facebook_loginview_log_out_button" formatted="false">Cerrar Sesión</string>
+	<string name="com_facebook_loginview_log_in_button" formatted="false">Iniciar Sesión</string>
+	<string name="com_facebook_loginview_logged_in_as" formatted="false">Sesión iniciada como: %1$s</string>
+	<string name="com_facebook_loginview_logged_in_using_facebook" formatted="false">Sesión iniciada con Facebook</string>
+	<string name="com_facebook_loginview_log_out_action" formatted="false">Cerrar sesión</string>
+	<string name="com_facebook_loginview_cancel_action" formatted="false">Cancelar</string>
+	<string name="com_facebook_logo_content_description" formatted="false">Logo de Facebook</string>
+	<string name="com_facebook_usersettingsfragment_log_in_button" formatted="false">Iniciar Sesión…</string>
+	<string name="com_facebook_usersettingsfragment_logged_in" formatted="false">Sesión iniciada</string>
+	<string name="com_facebook_usersettingsfragment_not_logged_in" formatted="false">No has iniciado sesión</string>
+	<string name="com_facebook_placepicker_subtitle_format" formatted="false">%1$s • %2$,d estuvieron aquí</string>
+	<string name="com_facebook_placepicker_subtitle_catetory_only_format" formatted="false">%1$s</string>
+	<string name="com_facebook_placepicker_subtitle_were_here_only_format" formatted="false">es:%1$,d estuvieron aquí</string>
+	<string name="com_facebook_picker_done_button_text" formatted="false">Aceptar</string>
+	<string name="com_facebook_choose_friends" formatted="false">Elige Amigos</string>
+	<string name="com_facebook_nearby" formatted="false">Cercano</string>
+	<string name="com_facebook_loading" formatted="false">Cargando</string>
+	<string name="com_facebook_internet_permission_error_title" formatted="false">Error de AndroidManifest</string>
+	<string name="com_facebook_internet_permission_error_message" formatted="false">WebView inicio de sesión requiere permiso INTERNET</string>
+	<string name="com_facebook_requesterror_web_login" formatted="false">Por favor, iniciar sesión a través https://www.facebook.com o https://m.facebook.com para volver a activar la aplicación para conectar con Facebook.</string>
+	<string name="com_facebook_requesterror_relogin" formatted="false">La aplicación no se conecta con Facebook, inicie sesión y volver a conectar esta aplicación.</string>
+	<string name="com_facebook_requesterror_password_changed" formatted="false">Su contraseña de Facebook ha cambiado, por favor vuelva a conectar la aplicación con Facebook.</string>
+	<string name="com_facebook_requesterror_reconnect" formatted="false">Se produjo un error al conectar con Facebook, por favor vuelva a conectar la aplicación con Facebook.</string>
+	<string name="com_facebook_requesterror_permissions" formatted="false">Una conexión de aplicación con Facebook falló debido a permisos insuficientes, por favor, conceda los permisos de aplicaciones para realizar la operación.</string>
+</resources>
