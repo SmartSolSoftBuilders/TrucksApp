@@ -192,8 +192,62 @@ for (var i=1; i<=7; i++){
  if (i==1){
 	  row[i-1].addEventListener('click',function (e){
 		Ti.API.info('Click en el botòn Mapa');	
-		   var mapaAndroid = require ('ui/mapa/MapaAndroid');	
-			new mapaAndroid().open(); 	
+		
+		//////////// Se buscan las últimas posiciones de los Trucks de la BD /////////////////////////////////	
+	var httpClientIndiv = Titanium.Network.createHTTPClient({
+		onload: function() {					  	
+			Ti.API.info("Se actualizó la bd de Posiciones de los Trucks."); 
+			//f.write(this.responseData);
+			var reply = JSON.parse(this.responseText);
+			var links = this.reply || [];
+			var numTrucks= reply.numtrucks;
+			var listaTrucks = reply.trucks;
+			var fechaConsultada= reply.version;
+			Ti.API.info("Se actualizó la bd de Posiciones de los Trucks."+listaTrucks[0]+"Se consultó desde el dispositivo en:"+fechaConsultada); 	
+
+			for (i=0; i<numTrucks;i++){
+				var truck = listaTrucks[i];
+				var fileVersionLocal = Titanium.Filesystem.getFile(Titanium.Filesystem.getApplicationDataDirectory(),listaTrucks[i].idTruck+".json");
+				if (fileVersionLocal.exists()){
+						fileVersionLocal.deleteFile(); 
+	    		}
+	    		fileVersionLocal.write("{\"datos\":"+JSON.stringify(truck)+"}");  
+				Ti.API.info('Actualizo archivo de Truck desde APD:' + truck);	
+			}		
+			var fileVersionLocal2 = Titanium.Filesystem.getFile(Titanium.Filesystem.getApplicationDataDirectory(),"fechaAct.json");  
+		    fileVersionLocal2.write("{\"fechaActualizacion\":\""+fechaConsultada+"\"}");
+		    Ti.API.info('Actualizo la fecha de actualización:' + fechaConsultada); 
+		    
+		    var fileVersionLocal4 = Titanium.Filesystem.getFile(Titanium.Filesystem.getApplicationDataDirectory(),"numtrucks.json");  
+	    	fileVersionLocal4.write("{\"trucks\":"+numTrucks+"}");
+		    Ti.API.info('Actualizo el num de Trucks:' + numTrucks); 
+		    
+
+	    	var mapaAndroid = require ('ui/mapa/MapaAndroid');	
+			new mapaAndroid().open(); 	 
+			},
+			onerror : function(e) {
+			 			//alert("Surgió un error al intentar actualizar la base de datos, vuelva a abrir la App");
+						//Ti.API.info("Surgió un error al intentar actualizar la base de datos");
+						var mapaAndroid = require ('ui/mapa/MapaAndroid');	
+						new mapaAndroid().open(); 	
+					},
+			timeout : 1000 
+		});
+		Ti.API.info('Buscando fecha a actualizar:');
+		var fileVersionLocal3 = Titanium.Filesystem.getFile(Titanium.Filesystem.getApplicationDataDirectory(),"fechaAct.json");  
+	    var paramFecha="";
+	    if (fileVersionLocal3.exists()){  
+			fileTmp = JSON.parse(fileVersionLocal3.read().text);
+			paramFecha=fileTmp.fechaActualizacion;
+			Ti.API.info('Ultima fecha de actualización:' + paramFecha); 
+		}else{
+				Ti.API.info('Se busca por primera vez');
+				paramFecha= "2014-10-01 13:00:0";			     	
+		}
+		httpClientIndiv.open("GET", "http://s544443713.onlinehome.mx/AppTrucks/app/getTrucksPositions.php?d="+paramFecha);
+		httpClientIndiv.send();
+		//////////////////////////////////////////////		
 		});
   }
   if (i==2){

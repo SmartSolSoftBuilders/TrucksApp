@@ -33,6 +33,10 @@ public final class RadarFoodTruckBetaApplication extends TiApplication
 		postAppInfo();
 
 
+	    KrollAssetHelper.AssetCrypt assetCrypt = new AssetCryptImpl();
+	    assetCrypt.setIsProduction(DEPLOY_TYPE_PRODUCTION.equals(appInfo.getDeployType()));
+	    KrollAssetHelper.setAssetCrypt(assetCrypt);
+
 
 		V8Runtime runtime = new V8Runtime();
 
@@ -52,44 +56,6 @@ public final class RadarFoodTruckBetaApplication extends TiApplication
 		stylesheet = new ApplicationStylesheet();
 		postOnCreate();
 
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
 
 	
 

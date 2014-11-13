@@ -17,7 +17,7 @@ public final class RadarFoodTruckBetaAppInfo implements ITiAppInfo
 	}
 
 	public String getDeployType() {
-		return "development";
+		return "test";
 	}
 
 	public String getId() {
@@ -29,7 +29,7 @@ public final class RadarFoodTruckBetaAppInfo implements ITiAppInfo
 	}
 
 	public String getVersion() {
-		return "8";
+		return "14";
 	}
 
 	public String getPublisher() {

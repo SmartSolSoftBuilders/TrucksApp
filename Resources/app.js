@@ -11,6 +11,8 @@ if (osname === 'iphone' || osname === 'ipad') {
 	else {
 		separadorImg='/';
 }	
+
+var win = Ti.UI.createWindow({backgroundImage:separadorImg+'ui/img/android/logo.png', fullscreen: true});
 	
 ////////////////////////////////////// --- SE OBTIENE LA VERSIÓN DEL PAQUETE DE TRUCKS --- //////////////////////
 
@@ -28,34 +30,60 @@ if (osname === 'iphone' || osname === 'ipad') {
 				new index().open(); 
      		},timeout : 1000 
         });            
- 		httpClient.open("GET", "http://s544443713.onlinehome.mx/AppTrucks/app/getUpdates.php");
+        
+        Ti.API.info('Buscando fecha de version de los trucks en general  a actualizar:');
+		var fileVersionLocal3 = Titanium.Filesystem.getFile(Titanium.Filesystem.getApplicationDataDirectory(),"version.json");  
+	    var paramFecha="";
+	    if (fileVersionLocal3.exists()){  
+			fileTmp = JSON.parse(fileVersionLocal3.read().text);
+			paramFecha=fileTmp.version;
+			Ti.API.info('Ultima fecha de actualización:' + paramFecha); 
+		}else{
+				Ti.API.info('Se busca por primera vez');
+				paramFecha= "2014-10-01 13:00:0";			     	
+		}
+		Ti.API.info("Se envía http://s544443713.onlinehome.mx/AppTrucks/app/getUpdates.php?d="+paramFecha);
+		
+ 		httpClient.open("GET", "http://s544443713.onlinehome.mx/AppTrucks/app/getUpdates.php?d="+paramFecha);
     	httpClient.send();
 	}
 
 	retrieveData(function(returnVar){
 		//If we get a null or undefined response, we'll just take an empty array
 		var links = returnVar || [];
-		var listaTrucks = returnVar.trucks;
 		var versionFromServer = returnVar.version;
 		var dataVersionLocal = 0;
+		var numTrucksPorActualizar = returnVar.numTrucks;
+		var listaTrucks = returnVar.trucks;
+		
 		//alert(links);
 		var fileVersionLocal = Titanium.Filesystem.getFile(Titanium.Filesystem.getApplicationDataDirectory(),"version.json");	
 		if (fileVersionLocal.exists()){
 			dataVersion = JSON.parse(fileVersionLocal.read().text);
-			Ti.API.info('Versión Actual desde APD' + dataVersion.version);
+			Ti.API.info('Fecha de Versión Actual desde APD' + dataVersion.version);
 		}else{
 			fileVersionLocal = Titanium.Filesystem.getFile(Titanium.Filesystem.getResourcesDirectory(),"version.json");	
 			dataVersion = JSON.parse(fileVersionLocal.read().text);
-			Ti.API.info('Versión Actual desde RD' + dataVersion.version);	
+			Ti.API.info('Fecha de Versión Actual desde RD' + dataVersion.version);	
 		}
-		Ti.API.info(dataVersion.version+"?<"+versionFromServer);
+		Ti.API.info(numTrucksPorActualizar+"?<"+versionFromServer);
 		/////////////// Si hay actualización se procede a actualizar la bd de Trucks ////////////////////////
-		if (dataVersion.version<versionFromServer){
-			Ti.API.info("!Hay nuevos datos disponibles! Versión:"+versionFromServer);
+		if (numTrucksPorActualizar>0){
+			Ti.API.info("!Hay nuevos datos disponibles!");
 			Ti.API.info('Trucks nuevos:' + listaTrucks);
 			var fileMainTrucks = Titanium.Filesystem.getFile(Titanium.Filesystem.getApplicationDataDirectory(),'trucks.json');	
 			fileMainTrucks.deleteFile();
 			fileMainTrucks.write("{\"trucks\":"+JSON.stringify(listaTrucks)+"}");
+			Ti.API.info("!Creando archivos individuales de los trucks!"+numTrucksPorActualizar);
+			for (k=0;k<numTrucksPorActualizar;k++){
+				var truck = listaTrucks[k];
+				var fileVersionLocal = Titanium.Filesystem.getFile(Titanium.Filesystem.getApplicationDataDirectory(),listaTrucks[k].idTruck+".json");
+				if (fileVersionLocal.exists()){
+						fileVersionLocal.deleteFile(); 
+	    		}
+	    		fileVersionLocal.write("{\"datos\":"+JSON.stringify(truck)+"}");  
+				Ti.API.info('Actualizo archivo:' + listaTrucks[k].idTruck+".json");
+			}
 			
 			//////////// Se actualizan las imágenes de la bd de Trucks /////////////////////////////////	
 		    var httpClientIndiv = Titanium.Network.createHTTPClient({
@@ -95,27 +123,43 @@ if (osname === 'iphone' || osname === 'ipad') {
 					}
 					
 					//Actualizando versión
-					var fileVersion = Titanium.Filesystem.getFile(Titanium.Filesystem.getApplicationDataDirectory(),'version.json');					
-					fileVersion.write("{\"version\":"+returnVar.version+"}");  	
-					Ti.API.info("Se actualizó la bd de Trucks. Se actualizaron las Imágenes!");      
+					var fileVersion = Titanium.Filesystem.getFile(Titanium.Filesystem.getApplicationDataDirectory(),'version.json');				
+					fileVersion.write("{\"version\":\""+returnVar.version+"\"}");  	
+					Ti.API.info("Se actualizó la bd de Trucks. Se actualizaron las Imágenes! Bienvenido");
+					var welcome = require ('ui/common/Welcome');	
+					new welcome().open(); 
 				  },
 				  onerror : function(e) {
 				  			//alert("Surgió un error al intentar actualizar la base de datos, vuelva a abrir la App");
 						//Ti.API.info("Surgió un error al intentar actualizar la base de datos");
 						},
-				  timeout : 1000 
+				  timeout : 100000 
 			}); 
-			httpClientIndiv.open("GET", "http://s544443713.onlinehome.mx/AppTrucks/app/imagenesTrucks.zip");
+			Ti.API.info("Se busca el zip con las imágenes:");
+			Ti.API.info('Buscando fecha de version de los trucks en general  a actualizar:');
+			var fileVersionLocal3 = Titanium.Filesystem.getFile(Titanium.Filesystem.getApplicationDataDirectory(),"version.json");  
+		 	   var paramFecha="";
+		    if (fileVersionLocal3.exists()){  
+				fileTmp = JSON.parse(fileVersionLocal3.read().text);
+			paramFecha=fileTmp.version;
+			Ti.API.info('Ultima fecha de actualización:' + paramFecha); 
+			}else{
+				Ti.API.info('Se busca por primera vez');
+				paramFecha= "2014-10-01 13:00:0";			     	
+			}
+			//httpClientIndiv.open("GET", "http://s544443713.onlinehome.mx/AppTrucks/app/imagenesTrucks.zip");
+			httpClientIndiv.open("GET", "http://s544443713.onlinehome.mx/AppTrucks/app/getZipTest.php?d="+paramFecha);
 			httpClientIndiv.send();	
 			////////////////////////////////////////////////////////
 		}
 		else{
+			var welcome = require ('ui/common/Welcome');	
+			new welcome().open(); 
 			//alert("No se actualizará");
 		}
 });
 
 ////////////////////////////////////// --- SECCIÓN FACEBOOK ---//////////////////////////////////////////////////
-var win = Ti.UI.createWindow({backgroundImage:separadorImg+'ui/img/android/logo.png', fullscreen: true});
 //var fb = require('facebook');
 /*fb.appid = '901121093249961';
 Ti.API.info('facebook logedin?' + fb.loggedIn);
@@ -181,7 +225,7 @@ else{
 		new welcome().open(); 
 	} 
 	else{
-		var welcome = require ('ui/common/Welcome');	
-		new welcome().open(); 
+		//var welcome = require ('ui/common/Welcome');	
+		//new welcome().open(); 
 	}
 //} 

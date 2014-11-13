@@ -2,15 +2,15 @@
 <ti:app xmlns:ti="http://ti.appcelerator.org">
     <id>smartsol.com.mx</id>
     <name>Radar Food Truck Beta</name>
-    <version>8</version>
+    <version>14</version>
     <publisher>Alf</publisher>
     <url>http://smartsol.com.mx</url>
     <description>App</description>
     <copyright>2014 by Alf</copyright>
     <icon>appicon.png</icon>
     <statusbar-hidden>false</statusbar-hidden>
-	<fullscreen>true</fullscreen>
-	<navbar-hidden>true</navbar-hidden>
+    <fullscreen>true</fullscreen>
+    <navbar-hidden>true</navbar-hidden>
     <analytics>true</analytics>
     <guid>3D2DC8E2-5FEC-41D5-A260-528AF7BB2F36</guid>
     <property name="ti.ui.defaultunit" type="string">dp</property>
@@ -39,12 +39,9 @@
             </dict>
         </plist>
     </ios>
-    
-
-	
     <android xmlns:android="http://schemas.android.com/apk/res/android">
-        <manifest android:versionCode="6" android:versionName="1.06">
-        	<application android:theme="@style/Theme.NoActionBar"/>
+        <manifest android:versionCode="14" android:versionName="1.14">
+            <application android:theme="@style/Theme.NoActionBar"/>
             <!-- Allows the API to download data from Google Map servers -->
             <uses-permission android:name="android.permission.INTERNET"/>
             <!-- Allows the API to cache data -->
@@ -67,7 +64,6 @@
                     android:name="com.google.android.maps.v2.API_KEY" android:value="AIzaSyCguQq2WIe1GUxmVv9uA_6lfsBT9CnkIzU"/>
             </application>
         </manifest>
-        
     </android>
     <mobileweb>
         <precache/>

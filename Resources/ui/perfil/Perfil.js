@@ -22,7 +22,37 @@ var os = function(/*Object*/ map) {
 
 var IMG_BASE2 = Titanium.Filesystem.getApplicationDataDirectory();
 
-var fileMainTrucks = Titanium.Filesystem.getFile(Titanium.Filesystem.getApplicationDataDirectory(),'trucks.json');	
+var fileMainTrucks = Titanium.Filesystem.getFile(Titanium.Filesystem.getApplicationDataDirectory(),'trucks.json');
+var lugarTruck="";
+var direccionTruck="";
+var fileLatLon = Titanium.Filesystem.getFile(Titanium.Filesystem.getApplicationDataDirectory(),idTruck+'.json');
+Ti.API.info('Se busca el archivo:'+idTruck+".json");
+		var data = [];
+		var folderImg="";
+		if (fileLatLon.exists()){
+			folderImg=Titanium.Filesystem.getApplicationDataDirectory();
+			data = JSON.parse(fileLatLon.read().text);
+			Ti.API.info('Se obtienen datos de AD' +data.datos.latitud);
+			Ti.API.info('Se obtienen datos de AD' +data.datos.longitude);
+			Ti.API.info('Se obtienen datos de AD' +data.datos.lugar);
+			direccionTruck=data.datos.direccion;
+			lugarTruck=	data.datos.lugar;
+		}
+		else{
+			folderImg=Titanium.Filesystem.getResourcesDirectory()+'/ui/img/android/';
+			fileLatLon = Titanium.Filesystem.getFile(Titanium.Filesystem.getResourcesDirectory(),'1.json');	
+			if (fileLatLon.exists()){
+				data = JSON.parse(fileLatLon.read().text);
+				Ti.API.info('Se obtienen datos de RD' +data.datos.latitud);
+				Ti.API.info('Se obtienen datos de RD' +data.datos.longitude);			
+			}
+			else{
+				Ti.API.info('No se pudieron obtener los datos');
+			}
+		}
+		var latitudeOrig=data.datos.latitud;
+		var longitudeOrig=data.datos.longitude;
+	
 var imageAvatars = new Array(30);
 var imgName="1";
 var nombreTruckTS="S/N";
@@ -225,20 +255,23 @@ var etiquetaTipo = Ti.UI.createLabel({
 
 var Map = require('ti.map');
 
-
+folderImg=Titanium.Filesystem.getApplicationDataDirectory();
+			
 var anotacionPerfil = Map.createAnnotation({
     latitude: 19.444706,
     longitude: -99.167377, 
     title:"Noodle Truck",
     subtitle: 'Comida Asiática',
-    image: '/ui/img/android/elbuen-logo-90.png',
+    image:folderImg+idTruck+"s.png",
+    
+//    image: '/ui/img/android/elbuen-logo-90.png',
     myid:1 
 });
 
 
 var miniMapa = Map.createView({
     mapType: Map.NORMAL_TYPE,
-    region : {latitude:19.441718, longitude:-99.160461,latitudeDelta:0.05, longitudeDelta:0.05},            
+    region : {latitude:latitudeOrig, longitude:longitudeOrig,latitudeDelta:0.05, longitudeDelta:0.05},            
     animate:true,
     regionFit:true,
     userLocation:true,
@@ -268,8 +301,9 @@ var referenciaDireccion = Ti.UI.createLabel({
 	backgroundColor: 'transparent',
     textAlign:'left',
 	tintColor:'white',
-	zIndex: 9999,	
-	text: 'Huerto Roma Verde',
+	zIndex: 9999,
+	//'Huerto Roma Verde'	
+	text: lugarTruck,
 	font:{
         fontFamily: os({
             iphone:'Avenir LT Std', 
@@ -288,7 +322,8 @@ var direccionDireccion = Ti.UI.createLabel({
     textAlign:'letf',
 	tintColor:'white',
 	zIndex: 9999,	
-	text: 'Xalapa S/N, 06760 Cuauhtémoc',
+	// 'Xalapa S/N, 06760 Cuauhtémoc',
+	text:direccionTruck,
 	font:{
 		
         fontFamily: os({

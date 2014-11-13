@@ -90,17 +90,18 @@ var fileMainTrucks = Titanium.Filesystem.getFile(Titanium.Filesystem.getApplicat
 var imageAvatars = new Array(30);
 if (fileMainTrucks.exists()){
 	var data = JSON.parse(fileMainTrucks.read().text);
-	for (var i=0; i<data.trucks.length; i++){
-	//alert(data.trucks.length);
-	//alert("i:"+i+"->"+data.trucks[i].nombre);
-  	var row = Ti.UI.createTableViewRow({
-    className:'forumEvent', // used to improve table performance
-    selectedBackgroundColor:'transparent',
-    rowIndex:i, // custom property, useful for determining the row during events
-    height:80
-  	});
+	 for (var i=0; i<data.trucks.length; i++){
+		//alert(data.trucks.length);
+		//alert("i:"+i+"->"+data.trucks[i].nombre);
+  		var row = Ti.UI.createTableViewRow({
+  		className:'forumEvent', // used to improve table performance
+  	  	selectedBackgroundColor:'transparent',
+  	  	rowIndex:i, // custom property, useful for determining the row during events
+  	  	index:data.trucks[i].idTruck,
+  	  	height:80
+  	 });
  
-  	imageAvatars[i] = Ti.UI.createImageView({
+  	 imageAvatars[i] = Ti.UI.createImageView({
    	 image: IMG_BASE2 + data.trucks[i].idTruck+'.jpg',
    	 left:10, top:5,
      width:50, height:50,id_:data.trucks[i].idTruck
@@ -233,10 +234,12 @@ var tableView = Ti.UI.createTableView({
   top: '6%'
 });
   tableView.addEventListener('click', function(evt) {	
- 	 		//alert();
- 	 		//alert(evt.source._id);	 	 		
-   		 	var perfil = require ('ui/perfil/Perfil');
-			new perfil(''+(evt.index+1)).open();       
+ 	 		//Ti.API.info(evt.source); 	 		
+   		 	//Ti.API.info(evt); 	
+   		 	//var perfil = require ('ui/perfil/Perfil');
+			//new perfil(''+(evt.index+1)).open();
+			var perfil = require ('ui/perfil/Perfil');
+			new perfil(''+evt.row.index).open();              
 	});
 
 win.add(tableView);

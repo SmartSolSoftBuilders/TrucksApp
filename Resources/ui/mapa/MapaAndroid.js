@@ -3,8 +3,7 @@ function MapaAndroid(){
 	var osname = Ti.Platform.osname,
 	version = Ti.Platform.version,
 	height = Ti.Platform.displayCaps.platformHeight,
-	width = Ti.Platform.displayCaps.platformWidth;
-	
+	width = Ti.Platform.displayCaps.platformWidth;	
 	if (osname === 'iphone' || osname === 'ipad') {
 		separadorImg='';
 	}
@@ -18,43 +17,7 @@ function MapaAndroid(){
 	Ti.API.info('Ruta1:'+Titanium.Filesystem.getResourcesDirectory());
 	Ti.API.info('Ruta2:'+Titanium.Filesystem.getApplicationDataDirectory());
 	
-	//////////// Se buscan las últimas posiciones de los Trucks de la BD /////////////////////////////////	
-		    var httpClientIndiv = Titanium.Network.createHTTPClient({
-				onload: function() {					  	
-					Ti.API.info("Se actualizó la bd de Posiciones de los Trucks."); 
-					//f.write(this.responseData);
-					var reply = JSON.parse(this.responseText);
-					var links = this.reply || [];
-					var numTrucks= reply.numtrucks;
-					var listaTrucks = reply.trucks;
-					Ti.API.info("Se actualizó la bd de Posiciones de los Trucks."+listaTrucks); 					
-					Ti.API.info("Se actualizó la bd de Posiciones de los Trucks."+listaTrucks[0]); 	
-									
-					for (i=0; i<numTrucks;i++){
-						var truck = listaTrucks[i];
-						var fileVersionLocal = Titanium.Filesystem.getFile(Titanium.Filesystem.getApplicationDataDirectory(),listaTrucks[i].idTruck+".json");
-						if (fileVersionLocal.exists()){
-							fileVersionLocal.deleteFile(); 
-	    				}
-	    				fileVersionLocal.write("{\"datos\":"+JSON.stringify(truck)+"}");  
-						Ti.API.info('Actualizo archivo de Truck desde APD:' + truck);					
-					}
-					var fileVersionLocal2 = Titanium.Filesystem.getFile(Titanium.Filesystem.getApplicationDataDirectory(),"numtrucks.json");  
-	    				fileVersionLocal2.write("{\"trucks\":"+numTrucks+"}");  
-
-				  },
-				  onerror : function(e) {
-				  			//alert("Surgió un error al intentar actualizar la base de datos, vuelva a abrir la App");
-						//Ti.API.info("Surgió un error al intentar actualizar la base de datos");
-						},
-				  timeout : 1000 
-			}); 
-			httpClientIndiv.open("GET", "http://s544443713.onlinehome.mx/AppTrucks/app/getTrucksPositions.php");
-			httpClientIndiv.send();
-			//////////////////////////////////////////////
 			
-	
-		
 	var self = Titanium.UI.createWindow({
 		theme: "Theme.NoActionBar",
 		backgroundColor :'white',
@@ -67,119 +30,67 @@ function MapaAndroid(){
     var pHeight = Ti.Platform.displayCaps.platformHeight;
 	
 	var btnInicio= Titanium.UI.createButton({		
-		/*backgroundColor:'#0F5E8B',
-		title:'TrucksApp - Favoritos',
-		textAlign:'center',
-		top:0,
-		left:0,
-		height:'12%',
-		width:pWidth,
-		tintColor:'white'		
-		*/
 		backgroundImage:separadorImg+'ui/img/android/header.png',
 		top:'0px',
 		left:'0',
 		height:'110px',
-		width:pWidth+"px"
-		
-		
+		width:pWidth+"px"				
 	});
 	btnInicio.addEventListener( 'click', function() {
     	self.close();	
 	});
 	
 	
-	var tituloCentrado = Titanium.UI.createView({
-		
+	var tituloCentrado = Titanium.UI.createView({	
 		backgroundImage: separadorImg+'ui/img/android/barra-menu.jpg',
 		top: '0px',
 		height: '15%',
 		widht: pWidth+"px",
 		zIndex: 9999,
-		layout:'composite'
-		
+		layout:'composite'		
 	});
 	
-	var tituloCentradoInterna = Titanium.UI.createView({
-		
+	var tituloCentradoInterna = Titanium.UI.createView({		
 		backgroundColor: 'transparent',
 		height: '90px',
 		widht: '80%',
-		zIndex: 9999
-		
+		zIndex: 9999		
 	});
 	
-	var camion = Titanium.UI.createImageView({
-		
-		image: 	separadorImg+'ui/img/android/camion.png',
-		
-		left: '10%',
-		
-		width: '12%',
-		
-		height: '62%',
-		
+	var camion = Titanium.UI.createImageView({		
+		image: 	separadorImg+'ui/img/android/camion.png',		
+		left: '10%',		
+		width: '12%',		
+		height: '62%',		
 		zIndex: 9999
-		
-	
 	});
 	
 	
 	var titulo = Titanium.UI.createImageView({
-	
-	
 	    image: 	separadorImg+'ui/img/android/titulo.png',
-	    
-	    
-	    
 	    left: '24%',
-	    
 	    width: '65%',
-		
 		height: '60%',
-	    
 	    zIndex: 9999
-	    
-	    
-	
 	});
 	
 	tituloCentradoInterna.add(camion);
-	tituloCentradoInterna.add(titulo);
-	
+	tituloCentradoInterna.add(titulo);	
 	tituloCentrado.add(tituloCentradoInterna);
-	
-	
-	
-	/*self.add(btnInicio);*/
 	
 	self.add(tituloCentrado);
 
-    var radarBaner = Titanium.UI.createImageView({
-		
-		image: 	separadorImg+'ui/img/android/radar-banner.png',
-		
+    var radarBaner = Titanium.UI.createImageView({		
+		image: 	separadorImg+'ui/img/android/radar-banner.png',	
 		top: '20%',
-		
 		left: '0%',
-		
 		width: '25%',
-		
 		height: '10%',
-		
-		zIndex: 9999
-		
-	
+		zIndex: 9999			
 	});
 
-  self.add(radarBaner);
-  
-  
-  	
-	
+    self.add(radarBaner);
 
-	
-	// generate random number, used to make each row appear distinct for this example
 	function randomInt(max){
 	  return Math.floor(Math.random() * max) + 1;
 	}
@@ -199,27 +110,23 @@ function MapaAndroid(){
 		tintColor:'white'		
 	});
 	
-	
-	
-	
-	
-	/*self.add(btn1);*/
-var Map = require('ti.map');
-var numTrucksToRead=0;
+	var Map = require('ti.map');
+	var numTrucksToRead=0;
 	var fileNumTrucksLocal = Titanium.Filesystem.getFile(Titanium.Filesystem.getApplicationDataDirectory(),"numtrucks.json");	
 	
 	if (fileNumTrucksLocal.exists()){
 			fileTmp = JSON.parse(fileNumTrucksLocal.read().text);
 			numTrucksToRead=fileTmp.trucks;
-			Ti.API.info('Num Trucks desde APD' + numTrucksToRead);
+			Ti.API.info('Se lee el Num de Trucks desde APD' + numTrucksToRead);
 	}else{
 			fileNumTrucksLocal = Titanium.Filesystem.getFile(Titanium.Filesystem.getResourcesDirectory(),"numtrucks.json");	
 			fileTmp = JSON.parse(fileNumTrucksLocal.read().text);
 			numTrucksToRead=fileTmp.trucks;
-			Ti.API.info('Num Trucks desde APD' + numTrucksToRead);	
+			Ti.API.info('Se lee el Num Trucks desde RD' + numTrucksToRead);	
 	}
 	var trucks = new Array(numTrucksToRead);	
-	for (i=0;i<numTrucksToRead;i++){
+	//for (i=0;i<numTrucksToRead;i++){
+		for (i=0;i<20;i++){
 		Ti.API.info("Buscando Archivo:"+(i+1)+'.json');
 		var file = Titanium.Filesystem.getFile(Titanium.Filesystem.getApplicationDataDirectory(),(i+1)+'.json');
 		var data = [];
@@ -228,19 +135,8 @@ var numTrucksToRead=0;
 			folderImg=Titanium.Filesystem.getApplicationDataDirectory();
 			data = JSON.parse(file.read().text);
 			Ti.API.info('Se obtienen datos de AD' + data);
-		}
-		else{
-			folderImg=Titanium.Filesystem.getResourcesDirectory()+'/ui/img/android/';
-			file = Titanium.Filesystem.getFile(Titanium.Filesystem.getResourcesDirectory(),'1.json');	
-			if (file.exists()){
-				data = JSON.parse(file.read().text);
-				Ti.API.info('Se obtienen datos de RD' + data.datos[0]);
-				Ti.API.info('Se obtienen datos de RD' + data.datos.id);
-			}
-			else{
-				Ti.API.info('No se pudieron obtener los datos');
-			}
-		}
+		
+			
 		trucks[i] = Map.createAnnotation({
 		    latitude: data.datos.latitud,
 		    longitude: data.datos.longitude, 
@@ -250,6 +146,10 @@ var numTrucksToRead=0;
 		    image: folderImg+data.datos.idTruck+"s.png",		    
 		    myid:data.datos.idTruck // Custom property to uniquely identify this annotation.
 		});
+	}
+	else{
+				Ti.API.info('No se pudieron obtener los datos');
+			}
 
 	}
 var win = Ti.UI.createWindow({backgroundColor: 'white'});
