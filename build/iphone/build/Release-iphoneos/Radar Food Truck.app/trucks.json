@@ -1,0 +1,8 @@
+{
+    "trucks": [
+        { "idTruck": "1", "nombre": "Truck 1", "descripcion": ""},
+        { "idTruck": "1", "nombre": "Truck 2", "descripcion": ""},
+        { "idTruck": "1", "nombre": "Truck 3", "descripcion": "" },
+        { "idTruck": "1", "nombre": "Truck 4", "descripcion": ""}
+    ]
+}

@@ -1,0 +1,19 @@
+{
+	"trucks":
+		[
+			{
+		  		"id":"1",
+		    	"Nombre":"Truck1",
+		    	"latitid":"",
+		    	"longitud":"",
+		   		"Info":"" 
+		    }	,
+		    {
+		  		"id":"2",
+		    	"latitid":"",
+		    	"longitud":"",  		
+		    	"Nombre":"Truck2",
+		   		"Info":"" 
+		    }	  
+		]
+}
